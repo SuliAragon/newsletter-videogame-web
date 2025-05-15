@@ -24,18 +24,28 @@ export default function FetchNews() {
   }, []);
 
   return (
-    <section className="p-8">
-      <h2 className="text-3xl font-bold mb-4 text-center">Últimas Noticias</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        {news.map((news) => (
-          <NewsCard
-            key={news.id}
-            imageUrl={news.img}
-            title={news.title}
-            link="http://localhost:8080/articles/{news.id}"
-          />
-        ))}
-      </div>
-    </section>
+    <div className="relative">
+      {news.map((item, index) => {
+        const isReverse = index % 2 !== 0;
+        const bgColor = isReverse
+          ? "bg-amber-50 text-neutral-900"
+          : "bg-neutral-900 text-white";
+
+        return (
+          <div
+            key={item.id}
+            className={`sticky top-0 h-screen w-full flex items-center justify-center ${bgColor} transition-all duration-1000`}
+          >
+            <NewsCard
+              imageUrl={item.img}
+              title={item.title}
+              link={`/articles/${item.id}`}
+              reverse={isReverse}
+              darkBackground={!isReverse} // <-- los que NO son reverse tienen fondo negro
+            />
+          </div>
+        );
+      })}
+    </div>
   );
 }
