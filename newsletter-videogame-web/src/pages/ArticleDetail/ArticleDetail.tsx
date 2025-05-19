@@ -2,23 +2,18 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
-interface User {
-  id: number;
-  username: string;
-}
-
 interface Article {
   id: number;
   title: string;
   img: string;
   content: string;
-  userId: number;
-  publishedAt?: string;
+  authorName: string;
+  createDate?: string;
+  updateDate?: string;
 }
 
 interface State {
   article: Article | null;
-  user: User | null;
   loading: boolean;
   error: string | null;
 }
@@ -27,7 +22,6 @@ export default function ArticleDetail() {
   const { id } = useParams<{ id: string }>();
   const [state, setState] = useState<State>({
     article: null,
-    user: null,
     loading: true,
     error: null,
   });
@@ -37,27 +31,18 @@ export default function ArticleDetail() {
 
     const fetchData = async () => {
       try {
-        setState({ article: null, user: null, loading: true, error: null });
+        setState({ article: null, loading: true, error: null });
 
         const { data: article } = await axios.get<Article>(
           `http://localhost:8080/articles/${id}`
         );
-        let user: User | null = null;
-
-        if (article.userId) {
-          const { data } = await axios.get<User>(
-            `http://localhost:8080/users/${article.userId}`
-          );
-          user = data;
-        }
-
-        setState({ article, user, loading: false, error: null });
+        setState({ article, loading: false, error: null });
       } catch (error) {
         setState({
           article: null,
-          user: null,
+
           loading: false,
-          error: "No se pudo cargar el artículo o el autor.",
+          error: "No se pudo cargar el artículo.",
         });
       }
     };
@@ -65,7 +50,7 @@ export default function ArticleDetail() {
     fetchData();
   }, [id]);
 
-  const { article, user, loading, error } = state;
+  const { article, loading, error } = state;
 
   if (loading) {
     return (
@@ -102,14 +87,14 @@ export default function ArticleDetail() {
 
       <div className="flex items-center space-x-6 mb-12 text-gray-500 italic font-semibold tracking-wide text-lg">
         <span className="bg-indigo-100 rounded-xl px-4 py-1 text-indigo-700 drop-shadow-md">
-          Por {user ? user.username : "Cargando autor..."}
+          Por {article.authorName || "Desconocido"}
         </span>
-        {article.publishedAt && (
+        {article.createDate && (
           <time
-            dateTime={article.publishedAt}
+            dateTime={article.createDate}
             className="bg-purple-100 rounded-xl px-4 py-1 text-purple-700 drop-shadow-md"
           >
-            {new Date(article.publishedAt).toLocaleDateString(undefined, {
+            {new Date(article.createDate).toLocaleDateString(undefined, {
               year: "numeric",
               month: "long",
               day: "numeric",
