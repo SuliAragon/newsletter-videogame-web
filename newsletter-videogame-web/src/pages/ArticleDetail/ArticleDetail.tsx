@@ -40,7 +40,6 @@ export default function ArticleDetail() {
       } catch (error) {
         setState({
           article: null,
-
           loading: false,
           error: "No se pudo cargar el artículo.",
         });
