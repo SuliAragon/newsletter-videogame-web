@@ -11,7 +11,7 @@ const Navbar: React.FC = () => {
     setIsLoggedIn(!!token);
   }, []);
 
-  // Escuchar cambios manuales (ej: despuÃ©s de login)
+  // Escuchar cambios en el almacenamiento local
   useEffect(() => {
     const handleStorageChange = () => {
       setIsLoggedIn(!!localStorage.getItem("token"));
@@ -41,42 +41,59 @@ const Navbar: React.FC = () => {
 
         <ul className="flex space-x-4">
           <li>
-            <a href="#" className="hover:text-gray-300">
+            <a
+              href="http://localhost:5173/noticias"
+              className="hover:text-gray-300"
+            >
               Noticias
             </a>
           </li>
           <li>
-            <a href="#" className="hover:text-gray-300">
-              Analisis
+            <a
+              href="http://localhost:5173/analisis"
+              className="hover:text-gray-300"
+            >
+              Análisis
             </a>
           </li>
           <li>
-            <a href="#" className="hover:text-gray-300">
+            <a
+              href="http://localhost:5173/retro"
+              className="hover:text-gray-300"
+            >
               Retro
             </a>
           </li>
           <li>
-            <a href="#" className="hover:text-gray-300">
+            <a
+              href="http://localhost:5173/indie"
+              className="hover:text-gray-300"
+            >
               Indie
             </a>
           </li>
-          {isLoggedIn ? (
+
+          {isLoggedIn && (
             <>
-              <Link to="/account">Mi cuenta</Link>
-              <button
-                onClick={handleLogout}
-                style={{
-                  background: "none",
-                  border: "none",
-                  color: "blue",
-                  cursor: "pointer",
-                }}
-              >
-                Logout
-              </button>
+              <li>
+                <Link to="/admin" className="hover:text-gray-300">
+                  Administrar
+                </Link>
+              </li>
+              <li>
+                <button
+                  onClick={handleLogout}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    color: "blue",
+                    cursor: "pointer",
+                  }}
+                >
+                  Logout
+                </button>
+              </li>
             </>
-          ) : (
-            <Link to="/login">Login</Link>
           )}
         </ul>
       </div>

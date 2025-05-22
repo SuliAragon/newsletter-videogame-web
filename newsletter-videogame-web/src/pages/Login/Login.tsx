@@ -19,7 +19,7 @@ const Login: React.FC = () => {
       const token = response.data.jwt;
       localStorage.setItem("token", token);
       window.dispatchEvent(new Event("storage"));
-      navigate("/account");
+      navigate("/admin");
     } catch (error) {
       alert("Login incorrecto");
     }
