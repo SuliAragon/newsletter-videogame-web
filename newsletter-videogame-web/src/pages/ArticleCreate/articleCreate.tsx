@@ -14,6 +14,7 @@ export default function ArticleCreate() {
   const [types, setTypes] = useState<string[]>([]);
   const [users, setUsers] = useState<UserDTO[]>([]);
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
+  const [typeError, setTypeError] = useState(false);
 
   const navigate = useNavigate();
 
@@ -34,12 +35,27 @@ export default function ArticleCreate() {
     }
   };
 
+  const isFormValid =
+    title.trim() !== "" &&
+    content.trim() !== "" &&
+    selectedUserId !== null &&
+    types.length > 0;
+
+  // Toda la constante es falsa porque los campos no estan llenos
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (!selectedUserId) {
       alert("Selecciona un autor");
       return;
     }
+
+    if (types.length === 0) {
+      setTypeError(true);
+      return;
+    }
+
+    setTypeError(false);
 
     try {
       let imgUrl = "";
@@ -66,7 +82,7 @@ export default function ArticleCreate() {
 
       await axios.post("http://localhost:8080/articles/", newArticle);
       alert("Artículo creado con éxito");
-      navigate("/articles");
+      navigate("/admin");
     } catch (error) {
       console.error(error);
       alert("Error al crear el artículo");
@@ -135,6 +151,11 @@ export default function ArticleCreate() {
             </label>
           ))}
         </div>
+        {typeError && (
+          <p className="text-sm text-red-500 mt-2">
+            Debes seleccionar al menos un tipo.
+          </p>
+        )}
       </div>
 
       <div className="mb-8">
@@ -159,7 +180,13 @@ export default function ArticleCreate() {
       <div className="text-center">
         <button
           type="submit"
-          className="bg-gradient-to-r from-green-500 to-emerald-600 text-white font-semibold px-6 py-3 rounded-xl shadow-md hover:scale-105 transition-transform hover:shadow-lg"
+          disabled={!isFormValid}
+          // activando el boton
+          className={`bg-gradient-to-r from-green-500 to-emerald-600 text-white font-semibold px-6 py-3 rounded-xl shadow-md transition-transform ${
+            isFormValid
+              ? "hover:scale-105 hover:shadow-lg"
+              : "opacity-50 cursor-not-allowed"
+          }`}
         >
           Publicar artículo
         </button>
