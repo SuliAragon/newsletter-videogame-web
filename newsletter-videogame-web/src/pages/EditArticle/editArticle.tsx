@@ -1,6 +1,8 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";  // <-- Importa aquí
 
 interface ArticleDTO {
   id: number;
@@ -33,7 +35,6 @@ export default function EditArticle() {
   const articleTypes = ["ANALISIS", "NOTICIA", "INDIE", "RETRO"];
 
   useEffect(() => {
-    // Cargar usuarios para autor
     axios
       .get("http://localhost:8080/users/")
       .then((res) => setUsers(res.data))
@@ -61,7 +62,6 @@ export default function EditArticle() {
     fetchArticle();
   }, [id]);
 
-  // Solo permitir seleccionar UNA categoría
   const handleTypeChange = (type: string) => {
     if (types.includes(type)) {
       setTypes([]);
@@ -94,7 +94,6 @@ export default function EditArticle() {
       let uploadedImgUrl = imgUrl || "";
 
       if (imgFile) {
-        // Subir imagen al backend
         const formData = new FormData();
         formData.append("file", imgFile);
 
@@ -150,7 +149,7 @@ export default function EditArticle() {
 
       <div className="mb-6">
         <label className="block font-semibold text-gray-700 mb-2">
-          Contenido
+          Contenido (Markdown)
         </label>
         <textarea
           className="w-full px-5 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition resize-y min-h-[150px]"
@@ -159,6 +158,10 @@ export default function EditArticle() {
           required
           placeholder="Contenido del artículo"
         />
+        {/* Vista previa del markdown */}
+        <div className="mt-6 p-4 bg-gray-50 rounded-lg prose max-w-none border border-gray-300">
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
+        </div>
       </div>
 
       <div className="mb-6">

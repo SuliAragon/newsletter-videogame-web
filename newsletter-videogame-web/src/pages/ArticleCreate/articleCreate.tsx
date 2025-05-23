@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import ReactMarkdown from "react-markdown";
 
 interface UserDTO {
   id: number;
@@ -41,7 +42,6 @@ export default function ArticleCreate() {
     selectedUserId !== null &&
     types.length > 0;
 
-  // Toda la constante es falsa porque los campos no estan llenos
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -109,9 +109,10 @@ export default function ArticleCreate() {
         />
       </div>
 
+      {/* Textarea para editar contenido Markdown */}
       <div className="mb-6">
         <label className="block font-semibold text-gray-700 mb-1">
-          Contenido
+          Contenido (Markdown)
         </label>
         <textarea
           className="w-full px-4 py-2 border rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-400 h-40 resize-none"
@@ -119,6 +120,28 @@ export default function ArticleCreate() {
           onChange={(e) => setContent(e.target.value)}
           required
         />
+      </div>
+
+      {/* Nuevo textarea de solo lectura que muestra el contenido Markdown crudo */}
+      <div className="mb-6">
+        <label className="block font-semibold text-gray-700 mb-1">
+          Previsualización (texto Markdown crudo)
+        </label>
+        <textarea
+          readOnly
+          className="w-full px-4 py-2 border rounded-xl shadow-sm bg-gray-100 h-40 resize-none"
+          value={content}
+        />
+      </div>
+
+      {/* Vista previa renderizada como HTML desde Markdown */}
+      <div className="mb-6">
+        <label className="block font-semibold text-gray-700 mb-2">
+          Vista previa renderizada
+        </label>
+        <div className="p-4 border rounded bg-gray-50 max-h-64 overflow-auto">
+          <ReactMarkdown>{content}</ReactMarkdown>
+        </div>
       </div>
 
       <div className="mb-6">
@@ -181,7 +204,6 @@ export default function ArticleCreate() {
         <button
           type="submit"
           disabled={!isFormValid}
-          // activando el boton
           className={`bg-gradient-to-r from-green-500 to-emerald-600 text-white font-semibold px-6 py-3 rounded-xl shadow-md transition-transform ${
             isFormValid
               ? "hover:scale-105 hover:shadow-lg"

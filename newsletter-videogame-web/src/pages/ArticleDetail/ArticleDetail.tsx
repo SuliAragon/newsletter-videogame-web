@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import ReactMarkdown from "react-markdown";
 
 interface Article {
   id: number;
@@ -111,8 +112,8 @@ export default function ArticleDetail() {
         />
       )}
 
-      <div className="text-xl leading-relaxed text-gray-800 tracking-wide prose max-w-none whitespace-pre-line font-sans">
-        {article.content}
+      <div className="prose max-w-none">
+        <ReactMarkdown>{article.content}</ReactMarkdown>
       </div>
     </article>
   );
