@@ -14,14 +14,21 @@ export default function FetchNews() {
     const fetchNews = async () => {
       try {
         const response = await axios.get("http://localhost:8080/articles/");
-        setNews(response.data);
+        // Ordenar por fecha descendente si quieres, o solo limitar a 5
+        const sortedNews = response.data.sort((a: any, b: any) => {
+          return new Date(b.date).getTime() - new Date(a.date).getTime();
+        });
+        // Limitar a 5
+        const limitedNews = sortedNews.slice(0, 5);
+        setNews(limitedNews);
       } catch (error) {
         console.error("Error fetching news:", error);
       }
     };
-
+  
     fetchNews();
   }, []);
+  
 
   return (
     <div className="relative">
@@ -49,3 +56,5 @@ export default function FetchNews() {
     </div>
   );
 }
+
+// este es el original

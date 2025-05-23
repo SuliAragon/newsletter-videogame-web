@@ -80,7 +80,7 @@ export default function ArticleDetail() {
   }
 
   return (
-    <article className="p-12 max-w-4xl mx-auto bg-gradient-to-br from-purple-50 via-white to-indigo-50 rounded-3xl shadow-2xl transform ">
+    <article className="p-12 max-w-4xl mx-auto bg-gradient-to-br from-purple-50 via-white to-indigo-50 rounded-3xl shadow-2xl transform">
       <h1 className="text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 mb-8">
         {article.title}
       </h1>
@@ -113,7 +113,13 @@ export default function ArticleDetail() {
       )}
 
       <div className="prose max-w-none">
-        <ReactMarkdown>{article.content}</ReactMarkdown>
+        <ReactMarkdown
+          components={{
+            hr: () => <hr className="my-8 border-t-2 border-gray-300" />,
+          }}
+        >
+          {article.content}
+        </ReactMarkdown>
       </div>
     </article>
   );

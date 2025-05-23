@@ -81,3 +81,6 @@ export default function NewsCard({
     </motion.div>
   );
 }
+
+
+// este es el original
