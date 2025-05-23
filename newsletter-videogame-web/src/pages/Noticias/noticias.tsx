@@ -20,7 +20,7 @@ export default function NoticiasPage() {
       .get("http://localhost:8080/articles/")
       .then((res) => {
         const filtered = res.data.filter((article: Article) =>
-          article.types.includes("NOTICIAS")
+          article.types.includes("NOTICIA")
         );
         setArticles(filtered);
         setLoading(false);
