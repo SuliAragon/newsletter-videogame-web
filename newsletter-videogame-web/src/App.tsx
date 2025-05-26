@@ -12,6 +12,7 @@ import IndiePage from "./pages/Indie/indie";
 import NoticiasPage from "./pages/Noticias/noticias";
 import RetroPage from "./pages/Retro/retro";
 import AnalisisPage from "./pages/Analisis/analisis";
+import Home from "./pages/home/Home";
 
 function App() {
   return (
@@ -19,7 +20,7 @@ function App() {
       <Navbar />
       <main className="min-h-screen">
         <Routes>
-          <Route path="/" element={<FetchNews />} />
+          <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/admin/create" element={<ArticleCreate />} />
