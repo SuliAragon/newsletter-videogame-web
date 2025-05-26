@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import NotFound from "./pages/NotFound/NotFound";
@@ -15,10 +15,18 @@ import AnalisisPage from "./pages/Analisis/analisis";
 import Home from "./pages/home/Home";
 
 function App() {
+  const location = useLocation();
+
+  const isHome = location.pathname === "/";
+
   return (
     <>
       <Navbar />
-      <main className="min-h-screen">
+      <main
+        className={`min-h-screen relative z-10 ${
+          isHome ? "bg-black bg-opacity-50" : ""
+        }`}
+      >
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
